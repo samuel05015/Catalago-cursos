@@ -1,22 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Catálogo de Cursos com Next.js e Supabase
 
-## Getting Started
+Este projeto implementa um catálogo de cursos utilizando Next.js com App Router e Supabase como backend.
 
-First, run the development server:
+## Funcionalidades
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Exibição de catálogo de cursos com imagem, título, descrição e link de compra
+- Painel administrativo protegido
+- Gerenciamento completo de cursos (CRUD)
+- Upload de imagens para o Supabase Storage
+- Autenticação e autorização
+- SEO otimizado
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tecnologias Utilizadas
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**: Next.js 14, React, TypeScript
+- **UI**: Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Implantação**: Vercel (frontend) + Supabase (backend)
+
+## Começando
+
+Primeiro, configure o arquivo `.env.local` com suas credenciais do Supabase e depois execute o servidor de desenvolvimento:
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
