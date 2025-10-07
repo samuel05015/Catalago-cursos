@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import ThemeToggle from '@/components/shared/theme-toggle';
@@ -95,30 +96,17 @@ export default function Navigation() {
       
       {/* Main navigation content */}
       <div className="container mx-auto flex justify-between items-center py-4 px-6 relative">
-        {/* Logo and brand */}
-        <Link href="/" className="flex items-center gap-3 group relative">
+        {/* Logo apenas, sem texto */}
+        <Link href="/" className="group relative">
           <div className="relative">
-            {/* Logo background glow */}
-            <div className="absolute -inset-2 bg-gradient-to-br from-accent-600/30 to-primary-600/30 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            
-            {/* Logo */}
-            <div className="w-10 h-10 bg-gradient-to-br from-accent-500 to-primary-600 rounded-xl flex items-center justify-center font-bold text-lg relative overflow-hidden group-hover:scale-110 transition-all duration-300">
-              {/* Inner texture and shine */}
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.1)_1px,transparent_1px)] bg-[size:4px_4px]"></div>
-              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent"></div>
-              
-              <span className="relative z-10 animate-pulse-slow">C</span>
-              
-              {/* Corner shine effect */}
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-white/30 rounded-full blur-sm transform translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </div>
-          </div>
-          
-          {/* Brand text with gradient */}
-          <div className="text-xl font-bold">
-            <span className="bg-gradient-to-r from-white via-accent-200 to-white bg-clip-text text-transparent group-hover:animate-gradient-text transition-all duration-300">
-              Catálogo de Cursos
-            </span>
+            {/* Logo extremamente grande */}
+            <Image
+              src="/evoluir.png"
+              alt="Logo Evoluir"
+              width={128}
+              height={128}
+              className="relative z-10 object-contain group-hover:scale-105 transition-all duration-300"
+            />
           </div>
         </Link>
         

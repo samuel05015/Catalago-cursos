@@ -18,33 +18,55 @@ interface Category {
 }
 
 export default async function CategoriesIndexPage() {
-  // Buscar categorias do Supabase
-  const cookieStore = cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
-  
-  // Consulta para buscar todas as categorias e contar cursos publicados
-  const { data: categories, error } = await supabase
-    .from('course_categories')
-    .select(`
-      *,
-      courses:courses (
-        count,
-        is_published
-      )
-    `)
-    .eq('courses.is_published', true)
-    .order('name', { ascending: true });
-  
-  // Processar os dados para contar apenas cursos publicados
-  const processedCategories: Category[] = categories?.map(category => {
-    return {
-      id: category.id,
-      name: category.name,
-      slug: category.slug,
-      description: category.description,
-      course_count: category.courses?.length || 0
-    };
-  }) || [];
+  // Inicializar variáveis
+  let categories = null;
+  let error = null;
+  let configError = null;
+  let processedCategories: Category[] = [];
+
+  try {
+    // Buscar categorias do Supabase
+    const cookieStore = cookies();
+    const supabase = createServerComponentClient({ cookies: () => cookieStore });
+    
+    // Verificar se Supabase está configurado
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!url || !key || url === "https://seu-projeto.supabase.co" || key === "sua-chave-anonima-aqui") {
+      configError = "Configuração do Supabase não encontrada ou inválida. Por favor, configure o arquivo .env.local com valores válidos.";
+    } else {
+      // Consulta para buscar todas as categorias e contar cursos publicados
+      const response = await supabase
+        .from('course_categories')
+        .select(`
+          *,
+          courses:courses (
+            count,
+            is_published
+          )
+        `)
+        .eq('courses.is_published', true)
+        .order('name', { ascending: true });
+      
+      categories = response.data;
+      error = response.error;
+      
+      // Processar os dados para contar apenas cursos publicados
+      processedCategories = categories?.map(category => {
+        return {
+          id: category.id,
+          name: category.name,
+          slug: category.slug,
+          description: category.description,
+          course_count: category.courses?.length || 0
+        };
+      }) || [];
+    }
+  } catch (err) {
+    console.error("Erro ao buscar categorias:", err);
+    error = { message: "Erro ao conectar ao banco de dados" };
+  }
 
   return (
     <div className="min-h-screen">
@@ -64,12 +86,24 @@ export default async function CategoriesIndexPage() {
 
       {/* Categories Grid Section */}
       <section className="container mx-auto px-6 mb-16">
-        {error && (
+        {(error || configError) && (
           <div className="text-center p-10 bg-red-50 dark:bg-red-900/20 rounded-lg mb-10 animate-fade-in">
-            <h2 className="text-xl font-bold mb-2 text-red-700 dark:text-red-400">Erro ao carregar categorias</h2>
+            <h2 className="text-xl font-bold mb-2 text-red-700 dark:text-red-400">
+              {configError ? "Erro de configuração" : "Erro ao carregar categorias"}
+            </h2>
             <p className="text-red-600 dark:text-red-300">
-              Não foi possível carregar as categorias. Tente novamente mais tarde.
+              {configError || "Não foi possível carregar as categorias. Tente novamente mais tarde."}
             </p>
+            {configError && (
+              <div className="mt-4 p-4 bg-red-900/20 rounded-lg border border-red-900/30 text-left mx-auto max-w-2xl">
+                <p className="text-sm text-gray-300 mb-2">Para corrigir este problema:</p>
+                <ol className="list-decimal list-inside text-sm text-gray-300">
+                  <li className="mb-1">Edite o arquivo <code className="bg-dark-800 px-1 rounded text-red-300">.env.local</code> na raiz do projeto</li>
+                  <li className="mb-1">Configure as variáveis <code className="bg-dark-800 px-1 rounded text-red-300">NEXT_PUBLIC_SUPABASE_URL</code> e <code className="bg-dark-800 px-1 rounded text-red-300">NEXT_PUBLIC_SUPABASE_ANON_KEY</code></li>
+                  <li>Reinicie o servidor de desenvolvimento</li>
+                </ol>
+              </div>
+            )}
           </div>
         )}
         

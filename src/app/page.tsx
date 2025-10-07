@@ -113,30 +113,53 @@ function CourseCard({ course }: { course: Course }) {
 }
 
 export default async function Home() {
-  // TESTE DE RENDERIZAÇÃO - REMOVER DEPOIS
-  // Buscar cursos publicados do Supabase
-  const cookieStore = cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
-  const { data: courses, error } = await supabase
-    .from('courses')
-    .select(`
-      *,
-      course_categories:category_id (
-        name,
-        slug
-      )
-    `)
-    .eq('is_published', true)
-    .order('is_featured', { ascending: false })
-    .order('sort_order', { ascending: true })
-    .order('created_at', { ascending: false });
+  // Configuração inicial para lidar com erros do Supabase
+  let courses = null;
+  let error = null;
+  let configError = null;
+  let formattedCourses: Course[] = [];
 
-  // Formatar os cursos com informações de categoria
-  const formattedCourses: Course[] = courses?.map(course => ({
-    ...course,
-    category_name: course.course_categories?.name,
-    category_slug: course.course_categories?.slug
-  })) || [];
+  try {
+    // Buscar cursos publicados do Supabase
+    const cookieStore = cookies();
+    const supabase = createServerComponentClient({ cookies: () => cookieStore });
+    
+    // Verificar se Supabase está configurado
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!url || !key || url === "https://seu-projeto.supabase.co" || key === "sua-chave-anonima-aqui") {
+      configError = "Configuração do Supabase não encontrada ou inválida. Por favor, configure o arquivo .env.local com valores válidos.";
+    } else {
+      // Se configurado corretamente, buscar os dados
+      const response = await supabase
+        .from('courses')
+        .select(`
+          *,
+          course_categories:category_id (
+            name,
+            slug
+          )
+        `)
+        .eq('is_published', true)
+        .order('is_featured', { ascending: false })
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
+      
+      courses = response.data;
+      error = response.error;
+      
+      // Formatar os cursos com informações de categoria
+      formattedCourses = courses?.map(course => ({
+        ...course,
+        category_name: course.course_categories?.name,
+        category_slug: course.course_categories?.slug
+      })) || [];
+    }
+  } catch (err) {
+    console.error("Erro ao buscar cursos:", err);
+    error = { message: "Erro ao conectar ao banco de dados" };
+  }
 
   return (
     <div className="min-h-screen text-center">
@@ -259,7 +282,7 @@ export default async function Home() {
           </div>
         </div>
         
-        {error && (
+        {(error || configError) && (
           <div className="text-center p-10 bg-error-900/20 border border-error-800 rounded-lg mb-10 animate-fade-in backdrop-blur-sm shadow-lg">
             <div className="relative mb-6">
               <div className="absolute -inset-4 bg-error-900/30 rounded-full blur-xl"></div>
@@ -269,10 +292,20 @@ export default async function Home() {
                 </svg>
               </div>
             </div>
-            <h2 className="text-xl font-bold mb-2 text-error-400">Erro ao carregar cursos</h2>
+            <h2 className="text-xl font-bold mb-2 text-error-400">{configError ? "Erro de configuração" : "Erro ao carregar cursos"}</h2>
             <p className="text-gray-300 max-w-lg mx-auto">
-              Não foi possível carregar os cursos. Tente novamente mais tarde.
+              {configError || "Não foi possível carregar os cursos. Tente novamente mais tarde."}
             </p>
+            {configError && (
+              <div className="mt-4 p-4 bg-error-900/40 rounded-lg border border-error-800/50 text-left mx-auto max-w-2xl">
+                <p className="text-sm text-gray-300 mb-2">Para corrigir este problema:</p>
+                <ol className="list-decimal list-inside text-sm text-gray-400">
+                  <li className="mb-1">Edite o arquivo <code className="bg-dark-800 px-1 rounded text-error-300">.env.local</code> na raiz do projeto</li>
+                  <li className="mb-1">Configure as variáveis <code className="bg-dark-800 px-1 rounded text-error-300">NEXT_PUBLIC_SUPABASE_URL</code> e <code className="bg-dark-800 px-1 rounded text-error-300">NEXT_PUBLIC_SUPABASE_ANON_KEY</code></li>
+                  <li>Reinicie o servidor de desenvolvimento</li>
+                </ol>
+              </div>
+            )}
             <div className="h-0.5 w-24 bg-error-700 mx-auto mt-4"></div>
           </div>
         )}
