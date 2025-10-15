@@ -91,9 +91,10 @@ export default function CategoriesPage() {
       setDeleteId(null);
       setError(null); // Limpar erro anterior se houver
       
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Erro ao excluir categoria:', err);
-      setError(err.message || 'Não foi possível excluir a categoria. Tente novamente.');
+      const errorMessage = err instanceof Error ? err.message : 'Não foi possível excluir a categoria. Tente novamente.';
+      setError(errorMessage);
       setShowDeleteModal(false);
       setDeleteId(null);
     }

@@ -11,9 +11,8 @@ interface Category {
   slug: string;
 }
 
-export default function EditCategoryPage({ params }: { params: { id: string } }) {
-  const { use } = require('react');
-  const categoryId = use(params).id;
+export default async function EditCategoryPage({ params }: { params: { id: string } }) {
+  const { id: categoryId } = await params;
   const router = useRouter();
   
   const [category, setCategory] = useState<Category | null>(null);

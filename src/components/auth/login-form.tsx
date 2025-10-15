@@ -53,8 +53,9 @@ export default function LoginForm() {
           router.push(redirectTo === '/admin' ? '/' : redirectTo);
         }
       }
-    } catch (err: any) {
-      setError(err.message || `Ocorreu um erro ao tentar ${isSignUp ? 'cadastrar' : 'fazer login'}.`);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : `Ocorreu um erro ao tentar ${isSignUp ? 'cadastrar' : 'fazer login'}.`;
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

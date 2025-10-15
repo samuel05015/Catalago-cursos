@@ -11,9 +11,8 @@ interface Tag {
   slug: string;
 }
 
-export default function EditTagPage({ params }: { params: { id: string } }) {
-  const { use } = require('react');
-  const tagId = use(params).id;
+export default async function EditTagPage({ params }: { params: { id: string } }) {
+  const { id: tagId } = await params;
   const router = useRouter();
   
   const [tag, setTag] = useState<Tag | null>(null);
