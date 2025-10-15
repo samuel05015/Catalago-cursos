@@ -19,6 +19,24 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Catálogo de Cursos",
   description: "Explore nosso catálogo de cursos online",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.png",
+        type: "image/png",
+      },
+      {
+        url: "/icon.png",
+        type: "image/png", 
+        sizes: "192x192",
+      }
+    ],
+    apple: {
+      url: "/apple-touch-icon.png",
+      type: "image/png",
+      sizes: "180x180",
+    },
+  },
 };
 
 export default function RootLayout({
