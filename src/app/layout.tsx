@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="pt-BR" className="scroll-smooth dark">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col
-                   bg-dark-900 text-gray-100
+                   bg-dark-900 text-gray-100 overflow-x-hidden
                    transition-colors duration-300`}
       >
         <ThemeProviderWrapper>

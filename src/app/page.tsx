@@ -177,7 +177,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen text-center">
+    <div className="min-h-screen text-center overflow-x-hidden">
       {/* Hero Section */}
       <section className="bg-black text-white py-20 mb-16 relative overflow-hidden">
         {/* Efeito de partículas/círculos */}
@@ -209,7 +209,7 @@ export default async function Home() {
                 <span>✨ Conhecimento ao seu alcance</span>
               </div>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in text-center w-full">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in text-center w-full">
               <span className="block relative">
                 Catálogo de <span className="relative">
                   <span className="absolute -inset-1 blur-sm bg-accent-500/20 rounded-lg"></span>
@@ -218,14 +218,14 @@ export default async function Home() {
               </span> 
               <span className="bg-gradient-to-r from-accent-400 via-secondary-400 to-primary-400 bg-clip-text text-transparent animate-gradient-text">Online</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-10 text-gray-100 animate-fade-in text-center backdrop-blur-sm bg-dark-900/30 rounded-lg py-3 px-6 inline-block border border-dark-700/50 shadow-lg">
+            <p className="text-lg md:text-2xl mb-10 text-gray-100 animate-fade-in text-center backdrop-blur-sm bg-dark-900/30 rounded-lg py-3 px-6 inline-block border border-dark-700/50 shadow-lg">
               Explore nossa seleção de cursos de alta qualidade e <span className="text-accent-300 font-medium">impulsione sua carreira</span>
             </p>
-            <div className="flex flex-wrap justify-center gap-4 animate-slide-up">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 animate-slide-up">
               <Link 
                 href="#cursos" 
                 className="bg-gradient-to-r from-accent-600 via-accent-500 to-secondary-600 text-white
-                         px-8 py-4 rounded-lg font-semibold shadow-2xl border border-accent-500
+                         px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold shadow-2xl border border-accent-500
                          hover:shadow-accent-500/50 hover:-translate-y-1 hover:scale-105 
                          transition-all duration-300 flex items-center gap-2 text-lg relative
                          overflow-hidden group"
@@ -240,7 +240,7 @@ export default async function Home() {
               <Link 
                 href="/categorias" 
                 className="bg-transparent border border-accent-500 text-white
-                         px-8 py-4 rounded-lg font-semibold shadow-lg 
+                         px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold shadow-lg 
                          hover:bg-accent-900/30 hover:border-accent-400 transition-all duration-300 flex items-center gap-2
                          group"
               >

@@ -78,23 +78,23 @@ export default function Navigation() {
   return (
     <nav className="relative z-50 bg-dark-900">
       {/* Main navigation content */}
-      <div className="container mx-auto flex justify-between items-center py-4 px-6 relative">
-        {/* Logo apenas, sem texto */}
-        <Link href="/" className="group relative">
+      <div className="container mx-auto flex justify-between items-center py-3 px-4 sm:py-4 sm:px-6 relative">
+        {/* Logo - oculta completamente no mobile */}
+        <Link href="/" className="group relative hidden sm:block">
           <div className="relative">
-            {/* Logo extremamente grande */}
+            {/* Logo menor no desktop */}
             <Image
               src="/evoluir.png"
               alt="Logo Evoluir"
-              width={128}
-              height={128}
+              width={80}
+              height={80}
               className="relative z-10 object-contain group-hover:scale-105 transition-all duration-300"
             />
           </div>
         </Link>
         
         {/* Navigation links */}
-        <div className="flex gap-8 items-center">
+        <div className="flex gap-4 sm:gap-8 items-center">
           <Link
             href="/"
             className={`group flex items-center gap-2 transition-all duration-300 relative ${pathname === '/' ? 'text-accent-300' : 'text-white'}`}
