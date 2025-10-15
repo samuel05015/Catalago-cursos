@@ -33,8 +33,8 @@ interface Course {
   sort_order: number;
 }
 
-export default async function EditCoursePage({ params }: { params: { id: string } }) {
-  const { id: courseId } = await params;
+export default function EditCoursePage({ params }: { params: { id: string } }) {
+  const courseId = params.id;
   const router = useRouter();
   
   const [course, setCourse] = useState<Course | null>(null);
