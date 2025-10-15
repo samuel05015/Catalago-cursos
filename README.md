@@ -1,54 +1,111 @@
-# 📚 Catálogo de Cursos
+# Catálogo de Cursos com Next.js e Supabase
 
-> Plataforma moderna para catálogo de cursos online construída com Next.js, Supabase e Tailwind CSS.
+Este projeto implementa um catálogo de cursos utilizando Next.js com App Router e Supabase como backend.
 
-## 🚀 **Demo**
+## Funcionalidades
 
-- **Site em produção**: [Em breve]
-- **Painel Admin**: [Em breve]/admin
+- Exibição de catálogo de cursos com imagem, título, descrição e link de compra
+- Painel administrativo protegido
+- Gerenciamento completo de cursos (CRUD)
+- Upload de imagens para o Supabase Storage
+- Autenticação e autorização
+- SEO otimizado
 
-## ✨ **Funcionalidades**
+## Tecnologias Utilizadas
 
-### 🎨 **Interface**
-- ✅ Tema escuro moderno e responsivo
-- ✅ Design profissional com Tailwind CSS
-- ✅ Navegação intuitiva e acessível
-- ✅ Otimizado para desktop e mobile
-
-### 🔐 **Autenticação**
-- ✅ Sistema de login unificado
-- ✅ Detecção automática de administradores
-- ✅ Proteção de rotas administrativas
-- ✅ Integração completa com Supabase Auth
-
-### 📊 **Gestão de Conteúdo**
-- ✅ CRUD completo de cursos
-- ✅ Gerenciamento de categorias
-- ✅ Sistema de tags
-- ✅ Upload de imagens
-- ✅ Editor com suporte a Markdown
-
-### 🛡️ **Segurança**
-- ✅ Row Level Security (RLS)
-- ✅ Validação de dados
-- ✅ Sanitização de inputs
-- ✅ Políticas de acesso granulares
-
-## 🛠 **Tecnologias**
-
-- **Framework**: Next.js 15.5.4 (App Router)
-- **Linguagem**: TypeScript
-- **Styling**: Tailwind CSS
-- **Banco de Dados**: Supabase (PostgreSQL)
-- **Autenticação**: Supabase Auth
-- **Deploy**: Vercel
-- **Bundler**: Turbopack
+- **Frontend**: Next.js 14, React, TypeScript
+- **UI**: Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Implantação**: Vercel (frontend) + Supabase (backend)
 
 ## Começando
 
 Primeiro, configure o arquivo `.env.local` com suas credenciais do Supabase e depois execute o servidor de desenvolvimento:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Catálogo de Cursos
+
+Um catálogo moderno de cursos desenvolvido com Next.js, Supabase e Tailwind CSS.
+
+## 🚀 Tecnologias
+
+- **Next.js 15.5.4** - Framework React com Turbopack
+- **Supabase** - Backend as a Service com PostgreSQL
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Estilização utility-first
+- **Auth** - Sistema completo de autenticação
+
+## ✨ Funcionalidades
+
+- 🎨 **Design moderno** com tema escuro
+- 👤 **Autenticação** de usuários
+- 🔐 **Painel administrativo** restrito
+- 📚 **Gestão de cursos** e categorias
+- 🏷️ **Sistema de tags**
+- 📱 **Interface responsiva**
+- 🛡️ **Segurança com RLS**
+
+## 🌐 Demo
+
+🔗 **Site**: [Em breve]
+🔧 **Admin**: Login necessário
+
+## 🛠️ Instalação Local
+
+1. Clone o repositório:
+```bash
+git clone https://github.com/samuel05015/Catalago-cursos.git
+cd Catalago-cursos
+```
+
+2. Instale as dependências:
+```bash
+npm install
+```
+
+3. Configure as variáveis de ambiente:
+```bash
+cp .env.example .env.local
+```
+
+4. Execute o projeto:
+```bash
+npm run dev
+```
+
+5. Acesse: http://localhost:3000
+
+## ⚙️ Configuração do Supabase
+
+1. Crie um projeto no [Supabase](https://supabase.com)
+2. Configure as tabelas necessárias
+3. Execute os scripts SQL incluídos
+4. Adicione as credenciais no `.env.local`
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── app/                 # App Router do Next.js
+│   ├── admin/          # Painel administrativo
+│   ├── categorias/     # Páginas de categorias
+│   ├── cursos/         # Páginas de cursos
+│   └── login/          # Autenticação
+├── components/         # Componentes reutilizáveis
+├── lib/               # Utilitários e configurações
+└── types/             # Tipos TypeScript
+```
+
+## 🚀 Deploy
+
+Este projeto está configurado para deploy automático na Vercel/Netlify através de commits no GitHub.
+
+## 👨‍💻 Desenvolvido por
+
+**Samuel** - [GitHub](https://github.com/samuel05015)
+
+---
+
+⭐ Se este projeto foi útil, considere dar uma estrela!
 
 ## Learn More
 
