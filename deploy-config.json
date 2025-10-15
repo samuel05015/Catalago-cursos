@@ -1,0 +1,10 @@
+{
+  "name": "deploy-setup",
+  "version": "1.0.0",
+  "scripts": {
+    "prepare-deploy": "echo 'Preparando para deploy...'",
+    "git-setup": "git add . && git commit -m 'feat: projeto completo para deploy' && echo 'Projeto commitado com sucesso!'",
+    "check-env": "echo 'Verificando variáveis de ambiente necessárias para produção...'",
+    "build-test": "npm run build && echo 'Build de teste concluído com sucesso!'"
+  }
+}

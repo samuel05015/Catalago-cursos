@@ -300,31 +300,32 @@ export default function NewCoursePage() {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Novo Curso</h1>
-        <Link 
-          href="/admin/cursos"
-          className="text-gray-600 hover:text-gray-900"
-        >
-          Voltar para lista
-        </Link>
-      </div>
-
-      {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-          {error}
+    <div className="min-h-screen bg-dark-900 text-white">
+      <div className="container mx-auto p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold text-white">Novo Curso</h1>
+          <Link 
+            href="/admin/cursos"
+            className="text-gray-400 hover:text-gray-200 transition-colors"
+          >
+            Voltar para lista
+          </Link>
         </div>
-      )}
 
-      <div className="bg-white rounded-lg shadow-md">
+        {error && (
+          <div className="bg-red-900/30 border-l-4 border-red-500 text-red-400 p-4 mb-6 rounded-lg backdrop-blur-sm">
+            {error}
+          </div>
+        )}
+
+        <div className="bg-dark-800/80 backdrop-blur-sm rounded-lg shadow-2xl border border-dark-700">
         <form onSubmit={handleSubmit} className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-6">
               {/* Título */}
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-                  Título do Curso <span className="text-red-500">*</span>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-200 mb-1">
+                  Título do Curso <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -332,7 +333,7 @@ export default function NewCoursePage() {
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-2 border border-dark-600 bg-dark-700 text-white rounded focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400"
                   placeholder="Ex: Desenvolvimento Web com React"
                   required
                 />
@@ -340,7 +341,7 @@ export default function NewCoursePage() {
               
               {/* Slug */}
               <div>
-                <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="slug" className="block text-sm font-medium text-gray-200 mb-1">
                   Slug URL
                 </label>
                 <input
@@ -349,18 +350,18 @@ export default function NewCoursePage() {
                   name="slug"
                   value={formData.slug}
                   onChange={handleSlugChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-2 border border-dark-600 bg-dark-700 text-white rounded focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400"
                   placeholder="Ex: desenvolvimento-web-com-react"
                 />
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-gray-400">
                   Identificador único para URL. Será gerado automaticamente se deixado em branco.
                 </p>
               </div>
               
               {/* Descrição Curta */}
               <div>
-                <label htmlFor="short_description" className="block text-sm font-medium text-gray-700 mb-1">
-                  Descrição Curta <span className="text-red-500">*</span>
+                <label htmlFor="short_description" className="block text-sm font-medium text-gray-200 mb-1">
+                  Descrição Curta <span className="text-red-400">*</span>
                 </label>
                 <textarea
                   id="short_description"
@@ -368,7 +369,7 @@ export default function NewCoursePage() {
                   value={formData.short_description}
                   onChange={handleChange}
                   rows={2}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-2 border border-dark-600 bg-dark-700 text-white rounded focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400"
                   placeholder="Uma breve descrição do curso (1-2 frases)"
                   required
                 />
@@ -376,7 +377,7 @@ export default function NewCoursePage() {
               
               {/* Descrição Completa */}
               <div>
-                <label htmlFor="full_description" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="full_description" className="block text-sm font-medium text-gray-200 mb-1">
                   Descrição Completa
                 </label>
                 <textarea
@@ -385,17 +386,17 @@ export default function NewCoursePage() {
                   value={formData.full_description}
                   onChange={handleChange}
                   rows={8}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-2 border border-dark-600 bg-dark-700 text-white rounded focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400"
                   placeholder="Descrição detalhada do curso. Suporta formatação markdown."
                 />
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-gray-400">
                   Você pode usar markdown para formatação.
                 </p>
               </div>
               
               {/* URL de Pagamento */}
               <div>
-                <label htmlFor="payment_url" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="payment_url" className="block text-sm font-medium text-gray-200 mb-1">
                   URL de Inscrição/Pagamento
                 </label>
                 <input
@@ -404,14 +405,14 @@ export default function NewCoursePage() {
                   name="payment_url"
                   value={formData.payment_url}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-2 border border-dark-600 bg-dark-700 text-white rounded focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400"
                   placeholder="https://exemplo.com/pagamento"
                 />
               </div>
               
               {/* Preço (Display) */}
               <div>
-                <label htmlFor="price_display" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="price_display" className="block text-sm font-medium text-gray-200 mb-1">
                   Preço/Valor (Texto)
                 </label>
                 <input
@@ -420,7 +421,7 @@ export default function NewCoursePage() {
                   name="price_display"
                   value={formData.price_display}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-2 border border-dark-600 bg-dark-700 text-white rounded focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400"
                   placeholder="Ex: R$ 97,00 ou Grátis"
                 />
               </div>
@@ -429,15 +430,15 @@ export default function NewCoursePage() {
             <div className="space-y-6">
               {/* Categoria */}
               <div>
-                <label htmlFor="category_id" className="block text-sm font-medium text-gray-700 mb-1">
-                  Categoria <span className="text-red-500">*</span>
+                <label htmlFor="category_id" className="block text-sm font-medium text-gray-200 mb-1">
+                  Categoria <span className="text-red-400">*</span>
                 </label>
                 <select
                   id="category_id"
                   name="category_id"
                   value={formData.category_id}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-2 border border-dark-600 bg-dark-700 text-white rounded focus:ring-primary-500 focus:border-primary-500"
                   required
                 >
                   <option value="">Selecione uma categoria</option>
@@ -451,16 +452,16 @@ export default function NewCoursePage() {
               
               {/* Tags */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
-                <div className="flex flex-wrap gap-2 p-3 border border-gray-300 rounded min-h-[100px]">
+                <label className="block text-sm font-medium text-gray-200 mb-2">Tags</label>
+                <div className="flex flex-wrap gap-2 p-3 border border-dark-600 rounded min-h-[100px]">
                   {availableTags.length > 0 ? (
                     availableTags.map(tag => (
                       <div 
                         key={tag.id} 
                         className={`px-3 py-1 rounded-full text-sm cursor-pointer transition-colors ${
                           formData.tags.includes(tag.id)
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            ? 'bg-primary-500 text-white'
+                            : 'bg-dark-600 text-gray-300 hover:bg-dark-500'
                         }`}
                         onClick={() => handleTagToggle(tag.id)}
                       >
@@ -468,14 +469,14 @@ export default function NewCoursePage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-500 text-sm">Nenhuma tag disponível. Crie tags primeiro.</p>
+                    <p className="text-gray-400 text-sm">Nenhuma tag disponível. Crie tags primeiro.</p>
                   )}
                 </div>
               </div>
               
               {/* Upload de Imagem */}
               <div>
-                <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="image" className="block text-sm font-medium text-gray-200 mb-1">
                   Imagem de Capa
                 </label>
                 <div className="space-y-2">
@@ -497,14 +498,14 @@ export default function NewCoursePage() {
                     onChange={handleImageChange}
                     className="w-full"
                   />
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-400">
                     Recomendado: JPG, PNG - proporção 16:9 - máximo 5 MB
                   </p>
                   
                   {isUploading && (
-                    <div className="w-full bg-gray-200 rounded h-2 mt-2">
+                    <div className="w-full bg-dark-700 rounded h-2 mt-2">
                       <div 
-                        className="bg-blue-600 h-2 rounded" 
+                        className="bg-primary-600 h-2 rounded" 
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
@@ -514,7 +515,7 @@ export default function NewCoursePage() {
               
               {/* URL da imagem (alternativa) */}
               <div>
-                <label htmlFor="image_url" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="image_url" className="block text-sm font-medium text-gray-200 mb-1">
                   URL da Imagem (alternativo ao upload)
                 </label>
                 <input
@@ -523,7 +524,7 @@ export default function NewCoursePage() {
                   name="image_url"
                   value={formData.image_url}
                   onChange={handleChange}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-2 border border-dark-600 rounded focus:ring-primary-500 focus:border-primary-500"
                   placeholder="https://exemplo.com/imagem.jpg"
                 />
               </div>
@@ -537,9 +538,9 @@ export default function NewCoursePage() {
                     name="is_published"
                     checked={formData.is_published}
                     onChange={handleChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                    className="h-4 w-4 text-blue-600 focus:ring-primary-500"
                   />
-                  <label htmlFor="is_published" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="is_published" className="ml-2 text-sm text-gray-200">
                     Publicar curso imediatamente
                   </label>
                 </div>
@@ -551,15 +552,15 @@ export default function NewCoursePage() {
                     name="is_featured"
                     checked={formData.is_featured}
                     onChange={handleChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                    className="h-4 w-4 text-blue-600 focus:ring-primary-500"
                   />
-                  <label htmlFor="is_featured" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="is_featured" className="ml-2 text-sm text-gray-200">
                     Destacar curso
                   </label>
                 </div>
                 
                 <div>
-                  <label htmlFor="sort_order" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="sort_order" className="block text-sm font-medium text-gray-200 mb-1">
                     Ordem de exibição
                   </label>
                   <input
@@ -568,10 +569,10 @@ export default function NewCoursePage() {
                     name="sort_order"
                     value={formData.sort_order}
                     onChange={handleChange}
-                    className="w-24 p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                    className="w-24 p-2 border border-dark-600 bg-dark-700 text-white rounded focus:ring-primary-500 focus:border-primary-500"
                     min="0"
                   />
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="mt-1 text-sm text-gray-400">
                     Cursos com valores menores aparecem primeiro
                   </p>
                 </div>
@@ -582,19 +583,20 @@ export default function NewCoursePage() {
           <div className="flex items-center justify-end mt-8 space-x-4 border-t pt-6">
             <Link
               href="/admin/cursos"
-              className="px-4 py-2 border border-gray-300 rounded shadow-sm text-gray-700 hover:bg-gray-100"
+              className="px-4 py-2 border border-dark-600 rounded shadow-sm text-gray-200 hover:bg-dark-700"
             >
               Cancelar
             </Link>
             <button
               type="submit"
               disabled={loading || isUploading}
-              className="px-4 py-2 bg-blue-600 text-white rounded shadow-sm hover:bg-blue-700 disabled:opacity-50"
+              className="px-4 py-2 bg-primary-600 text-white rounded shadow-sm hover:bg-primary-700 disabled:opacity-50"
             >
               {loading ? 'Salvando...' : 'Salvar Curso'}
             </button>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );

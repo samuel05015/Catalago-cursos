@@ -214,7 +214,10 @@ export default function CoursesPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">
-                      {course.price_display || '-'}
+                      {course.price_display 
+                        ? (course.price_display.startsWith('R$') ? course.price_display : `R$ ${course.price_display}`)
+                        : '-'
+                      }
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

@@ -4,7 +4,7 @@ import LoginForm from '@/components/auth/login-form';
 // Metadata para a página
 export const metadata: Metadata = {
   title: 'Login - Catálogo de Cursos',
-  description: 'Faça login para acessar o painel administrativo.',
+  description: 'Faça login ou crie sua conta para acessar a plataforma.',
 };
 
 export default function LoginPage() {
@@ -26,10 +26,10 @@ export default function LoginPage() {
             </svg>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-white bg-clip-text text-transparent bg-gradient-to-r from-accent-400 via-white to-secondary-400">
-            Acesso Administrativo
+            Bem-vindo
           </h1>
           <p className="text-gray-300 mb-2">
-            Entre com suas credenciais para acessar o painel
+            Faça login ou crie sua conta para acessar a plataforma
           </p>
           <div className="h-1 w-20 bg-gradient-to-r from-accent-600 to-secondary-600 mx-auto rounded-full"></div>
         </div>

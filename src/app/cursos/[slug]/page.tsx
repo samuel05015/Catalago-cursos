@@ -193,50 +193,156 @@ export default async function CoursePage({ params }: { params: { slug: string } 
             
             {/* Sidebar */}
             <div className="lg:w-1/3 lg:mt-0">
-              <div className="bg-dark-900/80 backdrop-blur-sm p-8 rounded-xl border border-dark-700
-                           shadow-lg shadow-accent-900/10 sticky top-24">
+              <div className="bg-gradient-to-b from-dark-900/90 via-dark-800/80 to-dark-900/90 
+                           backdrop-blur-lg p-8 rounded-2xl border border-emerald-700/20
+                           shadow-2xl shadow-emerald-900/20 sticky top-24 relative overflow-hidden">
+                {/* Efeito de brilho de fundo */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-green-400 to-emerald-500"></div>
+                <div className="absolute -top-20 -right-20 w-40 h-40 bg-emerald-500/5 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-green-500/5 rounded-full blur-3xl"></div>
+                
+                <div className="relative z-10">
                 {courseDetails.price_display && (
-                  <div className="mb-6">
-                    <span className="text-gray-300 text-sm">Investimento:</span>
-                    <div className="text-3xl font-bold text-success-400 mt-1">
-                      {courseDetails.price_display}
+                  <div className="mb-8 p-6 bg-gradient-to-r from-emerald-900/20 to-green-900/20 
+                              border border-emerald-700/30 rounded-2xl backdrop-blur-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                      </svg>
+                      <span className="text-emerald-200 text-sm font-medium">Investimento especial:</span>
                     </div>
+                    <div className="text-4xl font-black text-emerald-400 drop-shadow-lg">
+                      {courseDetails.price_display?.startsWith('R$') 
+                        ? courseDetails.price_display 
+                        : `R$ ${courseDetails.price_display}`
+                      }
+                    </div>
+                    <p className="text-emerald-300/80 text-sm mt-2">
+                      ✨ Valor promocional por tempo limitado
+                    </p>
                   </div>
                 )}
                 
                 {courseDetails.payment_url ? (
-                  <a 
-                    href={courseDetails.payment_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full bg-gradient-to-r from-accent-600 to-secondary-600 text-white text-center py-4 px-6 
-                             rounded-xl font-semibold hover:shadow-lg hover:shadow-accent-900/20
-                             transition-all duration-300 mb-6 border border-accent-500/20"
-                  >
-                    Inscrever-se Agora
-                  </a>
+                  <div className="space-y-4 mb-6">
+                    {/* Botão principal de inscrição - VERDE */}
+                    <a 
+                      href={courseDetails.payment_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full bg-gradient-to-r from-emerald-600 via-green-600 to-emerald-700 
+                               hover:from-emerald-500 hover:via-green-500 hover:to-emerald-600
+                               text-white text-center py-5 px-8 rounded-2xl font-bold text-lg
+                               shadow-2xl shadow-emerald-900/50 hover:shadow-emerald-500/30
+                               transform hover:-translate-y-1 hover:scale-105 
+                               transition-all duration-300 border border-emerald-400/30
+                               relative overflow-hidden group animate-pulse"
+                    >
+                      {/* Efeito de brilho */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent 
+                                    opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-opacity duration-500"></div>
+                      
+                      {/* Ícone e texto */}
+                      <div className="flex items-center justify-center gap-3 relative z-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span>INSCREVER-SE AGORA</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </div>
+                    </a>
+                    
+                    {/* Botão secundário - Mais informações */}
+                    <button 
+                      className="w-full bg-gradient-to-r from-gray-800 to-gray-700 
+                               hover:from-gray-700 hover:to-gray-600
+                               text-gray-200 hover:text-white text-center py-3 px-6 
+                               rounded-xl font-medium border border-gray-600/50 hover:border-gray-500
+                               transition-all duration-300 backdrop-blur-sm"
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Mais Informações</span>
+                      </div>
+                    </button>
+                  </div>
                 ) : (
-                  <div className="bg-dark-800/80 text-gray-400 
-                              text-center py-4 px-6 rounded-xl font-medium mb-6 border border-dark-700">
-                    Em breve
+                  <div className="bg-gradient-to-r from-amber-900/50 to-orange-900/50 
+                              border border-amber-600/30 text-amber-200 
+                              text-center py-5 px-6 rounded-2xl font-medium mb-6 
+                              backdrop-blur-sm relative overflow-hidden">
+                    <div className="flex items-center justify-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Em breve - Aguarde o lançamento!</span>
+                    </div>
                   </div>
                 )}
                 
-                <div className="border-t border-dark-700/50 pt-6 mt-6">
-                  <h3 className="font-semibold mb-4 text-white">
+                <div className="border-t border-emerald-700/30 pt-6 mt-6">
+                  <h3 className="font-bold mb-6 text-white flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     Informações do curso
                   </h3>
-                  <ul className="space-y-3 text-gray-300">
-                    <li className="flex justify-between">
-                      <span>Categoria:</span>
-                      <span className="font-medium text-accent-300">{courseDetails.category_name || 'Não categorizado'}</span>
-                    </li>
-                    <li className="flex justify-between">
-                      <span>Publicado:</span>
-                      <span className="font-medium text-success-300">Disponível</span>
-                    </li>
-                  </ul>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-900/20 to-indigo-900/20 
+                                  border border-blue-700/30 rounded-xl backdrop-blur-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-blue-600/20 rounded-full flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                          </svg>
+                        </div>
+                        <span className="text-gray-300">Categoria:</span>
+                      </div>
+                      <span className="font-bold text-blue-300 bg-blue-900/30 px-3 py-1 rounded-full border border-blue-700/50">
+                        {courseDetails.category_name || 'Não categorizado'}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-emerald-900/20 to-green-900/20 
+                                  border border-emerald-700/30 rounded-xl backdrop-blur-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-emerald-600/20 rounded-full flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <span className="text-gray-300">Status:</span>
+                      </div>
+                      <span className="font-bold text-emerald-300 bg-emerald-900/30 px-3 py-1 rounded-full border border-emerald-700/50 
+                                   animate-pulse">
+                        🟢 Disponível
+                      </span>
+                    </div>
+                    
+                    {courseDetails.is_featured && (
+                      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-amber-900/20 to-yellow-900/20 
+                                    border border-amber-700/30 rounded-xl backdrop-blur-sm">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-amber-600/20 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                          </div>
+                          <span className="text-gray-300">Destaque:</span>
+                        </div>
+                        <span className="font-bold text-amber-300 bg-amber-900/30 px-3 py-1 rounded-full border border-amber-700/50 
+                                     animate-bounce">
+                          ⭐ Curso em destaque
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
+                </div> {/* Fechar div z-10 */}
               </div>
             </div>
           </div>

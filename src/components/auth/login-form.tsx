@@ -9,12 +9,13 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSignUp, setIsSignUp] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirectTo') || '/admin';
+  const redirectTo = searchParams.get('redirectTo') || '/';
 
-  // Função para lidar com o login
-  const handleLogin = async (e: React.FormEvent) => {
+  // Função para lidar com login/cadastro
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
@@ -22,20 +23,38 @@ export default function LoginForm() {
     try {
       const supabase = createClient();
       
-      // Tenta fazer login com email/senha
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      if (isSignUp) {
+        // Cadastro
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
 
-      if (error) {
-        throw error;
+        if (error) throw error;
+        
+        setError(null);
+        alert('Cadastro realizado! Verifique seu email para confirmar a conta.');
+        setIsSignUp(false);
+      } else {
+        // Login
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) throw error;
+
+        // Verificar se é administrador
+        const isAdmin = email === 'sh05015130405@gmail.com' && password === 'Samu05015';
+        
+        if (isAdmin) {
+          router.push('/admin');
+        } else {
+          router.push(redirectTo === '/admin' ? '/' : redirectTo);
+        }
       }
-
-      // Redireciona para a página solicitada após login bem-sucedido
-      router.push(redirectTo);
     } catch (err: any) {
-      setError(err.message || 'Ocorreu um erro ao tentar fazer login.');
+      setError(err.message || `Ocorreu um erro ao tentar ${isSignUp ? 'cadastrar' : 'fazer login'}.`);
     } finally {
       setLoading(false);
     }
@@ -55,7 +74,7 @@ export default function LoginForm() {
         </div>
       )}
       
-      <form onSubmit={handleLogin} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-white text-sm font-medium mb-2" 
                 htmlFor="email">
@@ -125,16 +144,36 @@ export default function LoginForm() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Entrando...
+                {isSignUp ? 'Cadastrando...' : 'Entrando...'}
               </span>
             ) : (
               <span className="relative z-10 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
+                  {isSignUp ? (
+                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                  ) : (
+                    <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
+                  )}
                 </svg>
-                Entrar
+                {isSignUp ? 'Criar Conta' : 'Entrar'}
               </span>
             )}
+          </button>
+        </div>
+        
+        <div className="text-center pt-4 border-t border-dark-700">
+          <p className="text-gray-400 text-sm">
+            {isSignUp ? 'Já tem uma conta?' : 'Não tem uma conta?'}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setIsSignUp(!isSignUp);
+              setError(null);
+            }}
+            className="text-accent-400 hover:text-accent-300 font-medium text-sm mt-1 transition-colors duration-200"
+          >
+            {isSignUp ? 'Fazer Login' : 'Criar Conta'}
           </button>
         </div>
       </form>

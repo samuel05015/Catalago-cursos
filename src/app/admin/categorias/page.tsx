@@ -58,20 +58,44 @@ export default function CategoriesPage() {
       const { createClientComponentClient } = await import('@supabase/auth-helpers-nextjs');
       const supabase = createClientComponentClient();
       
+      // Primeiro, verificar se há cursos associados a esta categoria
+      const { data: coursesWithCategory, error: coursesError } = await supabase
+        .from('courses')
+        .select('id')
+        .eq('category_id', deleteId)
+        .limit(1);
+      
+      if (coursesError) {
+        console.error('Erro ao verificar cursos associados:', coursesError);
+        throw new Error('Erro ao verificar dependências da categoria');
+      }
+      
+      if (coursesWithCategory && coursesWithCategory.length > 0) {
+        throw new Error('Não é possível excluir esta categoria porque há cursos associados a ela. Remova ou reclassifique os cursos primeiro.');
+      }
+      
+      // Se não há cursos associados, prosseguir com a exclusão
       const { error } = await supabase
         .from('course_categories')
         .delete()
         .eq('id', deleteId);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Erro do Supabase ao excluir:', error);
+        throw new Error(`Erro ao excluir categoria: ${error.message}`);
+      }
       
       // Atualiza a lista removendo a categoria excluída
       setCategories(categories.filter(category => category.id !== deleteId));
       setShowDeleteModal(false);
       setDeleteId(null);
-    } catch (err) {
+      setError(null); // Limpar erro anterior se houver
+      
+    } catch (err: any) {
       console.error('Erro ao excluir categoria:', err);
-      setError('Não foi possível excluir a categoria. Verifique se não há cursos associados a ela.');
+      setError(err.message || 'Não foi possível excluir a categoria. Tente novamente.');
+      setShowDeleteModal(false);
+      setDeleteId(null);
     }
   }
 

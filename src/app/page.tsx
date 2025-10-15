@@ -69,11 +69,11 @@ function CourseCard({ course }: { course: Course }) {
       <div className="p-6 relative z-10">
         <div className="mb-2">
           {course.category_name && (
-            <span className="text-xs text-accent-400 font-medium uppercase tracking-wide flex items-center gap-1 bg-dark-900/50 inline-block px-2 py-1 rounded border border-dark-700/50 hover:border-accent-700/30 transition-colors duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+            <span className="text-xs text-accent-400 font-medium uppercase tracking-wide flex items-center justify-center gap-1 bg-dark-900/50 inline-flex px-2 py-1 rounded border border-dark-700/50 hover:border-accent-700/30 transition-colors duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 flex-shrink-0 self-center" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
               </svg>
-              {course.category_name}
+              <span className="leading-none">{course.category_name}</span>
             </span>
           )}
         </div>
@@ -87,7 +87,10 @@ function CourseCard({ course }: { course: Course }) {
         <div className="flex justify-between items-center pt-4 border-t border-dark-700 relative">
           <span className="relative overflow-hidden inline-block">
             <span className="text-lg font-bold text-success-DEFAULT group-hover:text-success-400 transition-colors duration-300">
-              {course.price_display || 'Consulte'}
+              {course.price_display 
+                ? (course.price_display.startsWith('R$') ? course.price_display : `R$ ${course.price_display}`)
+                : 'Consulte'
+              }
             </span>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-success-500/50 group-hover:w-full transition-all duration-300 delay-75"></span>
           </span>
@@ -112,12 +115,16 @@ function CourseCard({ course }: { course: Course }) {
   );
 }
 
+// Forçar revalidação a cada requisição
+export const revalidate = 0;
+
 export default async function Home() {
   // Configuração inicial para lidar com erros do Supabase
   let courses = null;
   let error = null;
   let configError = null;
   let formattedCourses: Course[] = [];
+  let categories: { id: string, name: string, slug: string }[] = [];
 
   try {
     // Buscar cursos publicados do Supabase
@@ -131,23 +138,31 @@ export default async function Home() {
     if (!url || !key || url === "https://seu-projeto.supabase.co" || key === "sua-chave-anonima-aqui") {
       configError = "Configuração do Supabase não encontrada ou inválida. Por favor, configure o arquivo .env.local com valores válidos.";
     } else {
-      // Se configurado corretamente, buscar os dados
-      const response = await supabase
-        .from('courses')
-        .select(`
-          *,
-          course_categories:category_id (
-            name,
-            slug
-          )
-        `)
-        .eq('is_published', true)
-        .order('is_featured', { ascending: false })
-        .order('sort_order', { ascending: true })
-        .order('created_at', { ascending: false });
+      // Buscar cursos e categorias em paralelo
+      const [coursesResponse, categoriesResponse] = await Promise.all([
+        supabase
+          .from('courses')
+          .select(`
+            *,
+            course_categories:category_id (
+              name,
+              slug
+            )
+          `)
+          .eq('is_published', true)
+          .order('is_featured', { ascending: false })
+          .order('sort_order', { ascending: true })
+          .order('created_at', { ascending: false }),
+        
+        supabase
+          .from('course_categories')
+          .select('id, name, slug')
+          .order('name', { ascending: true })
+      ]);
       
-      courses = response.data;
-      error = response.error;
+      courses = coursesResponse.data;
+      error = coursesResponse.error;
+      categories = categoriesResponse.data || [];
       
       // Formatar os cursos com informações de categoria
       formattedCourses = courses?.map(course => ({
@@ -157,7 +172,7 @@ export default async function Home() {
       })) || [];
     }
   } catch (err) {
-    console.error("Erro ao buscar cursos:", err);
+    console.error("Erro ao buscar dados:", err);
     error = { message: "Erro ao conectar ao banco de dados" };
   }
 
@@ -241,43 +256,71 @@ export default async function Home() {
 
       {/* Courses Section */}
       <section id="cursos" className="container mx-auto px-6 mb-20">
-        <div className="text-center mb-16 relative">
-          {/* Decoração de fundo */}
-          <div className="absolute -inset-20 bg-primary-600/5 blur-3xl rounded-full opacity-70 pointer-events-none"></div>
+        <div className="text-center mb-16 relative py-12">
+          {/* Decoração de fundo melhorada */}
+          <div className="absolute -inset-32 bg-gradient-to-r from-primary-600/5 via-primary-600/10 to-primary-600/5 blur-3xl rounded-full opacity-70 pointer-events-none"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-px h-16 bg-gradient-to-b from-transparent via-primary-500/30 to-transparent"></div>
           
-          <div className="inline-block mb-3 px-4 py-2 bg-primary-900/30 border border-primary-800/70 rounded-full text-primary-300 text-sm backdrop-blur-sm shadow-lg relative">
-            <div className="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
-              </svg>
-              <span>Conhecimento para todos</span>
+          {/* Badge superior */}
+          <div className="inline-flex items-center mb-8 px-6 py-3 bg-gradient-to-r from-primary-900/40 via-primary-800/50 to-primary-900/40 
+                         border border-primary-700/50 rounded-full text-primary-200 text-sm backdrop-blur-sm shadow-2xl relative
+                         hover:shadow-primary-500/20 transition-all duration-300 group">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-600/0 via-primary-600/20 to-primary-600/0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="flex items-center gap-3 relative z-10">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                </svg>
+              </div>
+              <span className="font-medium tracking-wide">Conhecimento para todos</span>
             </div>
           </div>
           
-          <div className="relative mb-4">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-700/0 via-primary-700/20 to-primary-700/0 blur-xl h-10 w-full"></div>
-            <h2 className="text-3xl md:text-5xl font-bold text-white text-center relative">
-              Nossos <span className="text-primary-400 text-shadow animate-pulse-slow">Cursos</span>
+          {/* Título principal */}
+          <div className="relative mb-8">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary-700/0 via-primary-600/30 to-primary-700/0 blur-2xl h-20 w-full"></div>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-center relative leading-tight">
+              <span className="text-white">
+                Nossos
+              </span>{' '}
+              <span className="text-primary-400 animate-pulse-slow relative">
+                Cursos
+                <div className="absolute -inset-2 bg-primary-500/20 blur-xl rounded-lg opacity-50"></div>
+              </span>
             </h2>
           </div>
           
-          <p className="text-gray-300 max-w-2xl mx-auto text-center backdrop-blur-sm bg-dark-900/20 py-3 px-6 rounded-lg inline-block border border-dark-800/50 shadow-lg mb-6">
-            Expanda seus conhecimentos com nossos cursos <span className="text-primary-300 font-medium">cuidadosamente selecionados</span> para impulsionar sua carreira
-          </p>
+          {/* Descrição */}
+          <div className="max-w-4xl mx-auto mb-10">
+            <p className="text-lg md:text-xl text-gray-300 leading-relaxed backdrop-blur-sm bg-gradient-to-r from-dark-900/30 via-dark-800/40 to-dark-900/30 
+                         py-6 px-8 rounded-2xl border border-dark-700/50 shadow-2xl relative overflow-hidden">
+              <span className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"></span>
+              <span className="relative z-10">
+                Expanda seus conhecimentos com nossos cursos{' '}
+                <span className="text-primary-300 font-semibold bg-primary-900/30 px-2 py-1 rounded-lg border border-primary-800/50">
+                  cuidadosamente selecionados
+                </span>{' '}
+                para impulsionar sua carreira
+              </span>
+              <span className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"></span>
+            </p>
+          </div>
           
-          <div className="mt-6 inline-block relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary-700/0 via-primary-700/20 to-primary-700/0 rounded-full blur-sm opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+          {/* Link para categorias */}
+          <div className="inline-flex items-center relative group">
+            <div className="absolute -inset-3 bg-gradient-to-r from-primary-600/0 via-primary-600/20 to-primary-600/0 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
             <Link 
               href="/categorias"
-              className="inline-block text-primary-400 hover:text-primary-300 transition-colors group relative"
+              className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 transition-all duration-300 
+                         px-6 py-3 rounded-full bg-primary-900/30 border border-primary-800/50 backdrop-blur-sm
+                         hover:bg-primary-800/40 hover:border-primary-700/70 hover:shadow-xl hover:shadow-primary-500/20
+                         group relative overflow-hidden"
             >
-              <div className="flex items-center gap-1 text-sm font-medium">
-                <span>Ver todas as categorias</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500/50 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute inset-0 bg-gradient-to-r from-primary-600/0 via-primary-600/10 to-primary-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+              <span className="relative z-10 font-medium">Ver todas as categorias</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300 relative z-10" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
             </Link>
           </div>
         </div>
@@ -339,8 +382,32 @@ export default async function Home() {
         )}
       </section>
 
+      {/* Separador entre seções */}
+      <div className="relative py-16 overflow-hidden">
+        {/* Linha central com gradiente */}
+        <div className="relative flex items-center justify-center">
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary-500/30 to-transparent max-w-xs"></div>
+          <div className="mx-8 relative">
+            {/* Ícone central */}
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-accent-600 rounded-full flex items-center justify-center shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+              </svg>
+            </div>
+            {/* Brilho ao redor do ícone */}
+            <div className="absolute inset-0 bg-primary-500/20 rounded-full blur-xl animate-pulse-slow"></div>
+          </div>
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary-500/30 to-transparent max-w-xs"></div>
+        </div>
+        
+        {/* Partículas decorativas */}
+        <div className="absolute top-1/2 left-1/4 w-2 h-2 bg-accent-400/40 rounded-full animate-ping-slow"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-primary-400/40 rounded-full animate-ping-slow" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-1/3 left-1/2 w-1.5 h-1.5 bg-secondary-400/40 rounded-full animate-ping-slow" style={{animationDelay: '2s'}}></div>
+      </div>
+
       {/* Categories Section */}
-      <section id="categories" className="container mx-auto px-6 mb-20 pt-20 relative">
+      <section id="categories" className="container mx-auto px-6 mb-20 pt-0 relative">
         {/* Efeitos de decoração */}
         <div className="absolute -left-20 top-1/3 w-40 h-40 bg-secondary-600/5 rounded-full blur-3xl"></div>
         <div className="absolute -right-20 bottom-1/3 w-40 h-40 bg-accent-600/5 rounded-full blur-3xl"></div>
@@ -367,17 +434,7 @@ export default async function Home() {
           </p>
         </div>
 
-        <CategoryGrid categories={formattedCourses
-          .map(course => ({ 
-            id: course.category_id || undefined, 
-            name: course.category_name, 
-            slug: course.category_slug 
-          }))
-          .filter(cat => Boolean(cat.id))
-          .filter((cat, index, self) => 
-            cat.id && self.findIndex(c => c.id === cat.id) === index
-          )
-        } />
+        <CategoryGrid categories={categories} />
       </section>
 
       {/* Call to Action */}

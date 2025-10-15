@@ -43,9 +43,6 @@ export default function RootLayout({
               <p className="text-sm">
                 &copy; {new Date().getFullYear()} Catálogo de Cursos - Todos os direitos reservados
               </p>
-              <p className="text-xs mt-2 text-accent-400">
-                Desenvolvido com Next.js, Tailwind e Supabase
-              </p>
             </div>
           </footer>
         </ThemeProviderWrapper>

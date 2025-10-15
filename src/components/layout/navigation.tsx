@@ -76,24 +76,7 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="relative z-50">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 bg-black overflow-hidden">
-        {/* Gradient background with subtle animation */}
-        <div className="absolute inset-0 bg-gradient-to-r from-accent-900/80 via-primary-900/80 to-secondary-900/80 opacity-90"></div>
-        
-        {/* Animated particles */}
-        <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-accent-400 rounded-full shadow-glow animate-ping-slow"></div>
-        <div className="absolute top-2/3 left-2/3 w-1 h-1 bg-primary-400 rounded-full shadow-glow animate-ping-slow" style={{animationDelay: '0.7s'}}></div>
-        <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-secondary-400 rounded-full shadow-glow animate-ping-slow" style={{animationDelay: '1.5s'}}></div>
-        
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.03)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-        
-        {/* Bottom highlight */}
-        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-accent-500/50 to-transparent"></div>
-      </div>
-      
+    <nav className="relative z-50 bg-dark-900">
       {/* Main navigation content */}
       <div className="container mx-auto flex justify-between items-center py-4 px-6 relative">
         {/* Logo apenas, sem texto */}
@@ -159,34 +142,36 @@ export default function Navigation() {
           <div className="pl-4 flex items-center gap-4 border-l border-white/10">
             {!loading && user ? (
               <div className="flex items-center gap-4">
-                {/* Admin panel button */}
-                <Link
-                  href="/admin"
-                  className={`group relative px-4 py-2 overflow-hidden rounded-xl transition-all duration-300
-                             ${pathname.startsWith('/admin') ? 'text-white' : 'text-white hover:text-white'}`}
-                >
-                  {/* Button background */}
-                  <div className={`absolute inset-0 transition-all duration-300 rounded-xl
-                                  ${pathname.startsWith('/admin') 
-                                    ? 'bg-gradient-to-r from-accent-600 via-accent-500 to-primary-600 opacity-100' 
-                                    : 'bg-dark-800/50 group-hover:bg-gradient-to-r group-hover:from-accent-700 group-hover:via-accent-600 group-hover:to-primary-700 opacity-80'}`}>
-                  </div>
-                  
-                  {/* Button border */}
-                  <div className="absolute inset-0 rounded-xl border border-accent-500/50 group-hover:border-accent-400/70 transition-colors duration-300"></div>
-                  
-                  {/* Button content */}
-                  <div className="flex items-center gap-2 relative z-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
-                    </svg>
-                    <span className="hidden md:inline">Painel Admin</span>
-                    <span className="md:hidden">Admin</span>
-                  </div>
-                  
-                  {/* Button shine effect */}
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
-                </Link>
+                {/* Admin panel button - só para administradores */}
+                {user.email === 'sh05015130405@gmail.com' && (
+                  <Link
+                    href="/admin"
+                    className={`group relative px-4 py-2 overflow-hidden rounded-xl transition-all duration-300
+                               ${pathname.startsWith('/admin') ? 'text-white' : 'text-white hover:text-white'}`}
+                  >
+                    {/* Button background */}
+                    <div className={`absolute inset-0 transition-all duration-300 rounded-xl
+                                    ${pathname.startsWith('/admin') 
+                                      ? 'bg-gradient-to-r from-accent-600 via-accent-500 to-primary-600 opacity-100' 
+                                      : 'bg-dark-800/50 group-hover:bg-gradient-to-r group-hover:from-accent-700 group-hover:via-accent-600 group-hover:to-primary-700 opacity-80'}`}>
+                    </div>
+                    
+                    {/* Button border */}
+                    <div className="absolute inset-0 rounded-xl border border-accent-500/50 group-hover:border-accent-400/70 transition-colors duration-300"></div>
+                    
+                    {/* Button content */}
+                    <div className="flex items-center gap-2 relative z-10">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+                      </svg>
+                      <span className="hidden md:inline">Painel Admin</span>
+                      <span className="md:hidden">Admin</span>
+                    </div>
+                    
+                    {/* Button shine effect */}
+                    <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
+                  </Link>
+                )}
                 
                 {/* Logout button */}
                 <button
